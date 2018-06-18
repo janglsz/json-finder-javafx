@@ -1,0 +1,1 @@
+This project is for building a JavaFX GUI Application, into which the json-finder source code will be integrated.
