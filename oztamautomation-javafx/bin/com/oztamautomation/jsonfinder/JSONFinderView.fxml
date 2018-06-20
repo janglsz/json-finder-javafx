@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1300.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oztamautomation.jsonfinder.JSONFinderController">
    <children>
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -65,7 +65,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <TextArea layoutX="250.0" layoutY="198.0" prefHeight="400.0" prefWidth="1000.0" AnchorPane.leftAnchor="250.0" />
+      <TextArea layoutX="252.0" layoutY="195.0" prefHeight="401.0" prefWidth="1000.0" />
       <Separator layoutX="250.0" layoutY="632.0" prefHeight="6.0" prefWidth="1000.0" AnchorPane.leftAnchor="250.0" />
       <Button layoutX="656.0" layoutY="670.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="189.0" style="-fx-background-color: #00A2E8; -fx-background-radius: 5em; -fx-border-radius: 5em;" text="Get JSON Logs" textFill="WHITE">
          <font>
