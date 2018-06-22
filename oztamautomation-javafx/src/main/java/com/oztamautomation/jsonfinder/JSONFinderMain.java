@@ -32,9 +32,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
+import javafx.scene.control.TextArea;
 
 
 public class JSONFinderMain extends Application {
@@ -129,6 +133,7 @@ public class JSONFinderMain extends Application {
 	private static String jsonStringFromClipboard;
 	
 	
+	
 	//--GETTERS AND SETTERS-----------------------------------------------------------------------------------------------------------------------------------/
 	
 	public static String getBaseURL() {
@@ -216,6 +221,7 @@ public class JSONFinderMain extends Application {
 			
 			// Create a FXML file loader object from the JSONFinderView.fxml file
 			FXMLLoader fxmlFileLoader = new FXMLLoader(JSONFinderMain.class.getResource("JSONFinderView.fxml"));
+			
 			// Create the main GUI anchor pane and load the FXML objects onto it
 			AnchorPane anchorPane = fxmlFileLoader.load();
 
