@@ -41,7 +41,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
 
 
-public class JSONFinderMain extends Application {
+public class Main extends Application {
 	
 	//--CONSTANTS-----------------------------------------------------------------------------------------------------------------------------------------------/
 
@@ -117,12 +117,12 @@ public class JSONFinderMain extends Application {
 	/** Holds the current sessionId */
 	private static String currentSessionId;
 	
-	/** Writes text to a character output stream */
-	private static BufferedWriter bw;
-	
 	/**  Allows the writing of streams of characters */
 	private static FileWriter fw;
 	
+	/** Writes text to a character output stream */
+	private static BufferedWriter bw;
+		
 	/** Create the file object */
 	private static File file;
 	
@@ -142,7 +142,7 @@ public class JSONFinderMain extends Application {
 	}
 
 	public static void setDriver(WebDriver driver) {
-		JSONFinderMain.driver = driver;
+		Main.driver = driver;
 	}
 	
 	public static String getFirefoxDriverFile() {
@@ -157,84 +157,127 @@ public class JSONFinderMain extends Application {
 		return baseURL;
 	}
 	public static void setBaseURL(String baseURL) {	
-		JSONFinderMain.baseURL = baseURL;
+		Main.baseURL = baseURL;
 	}
 	
 	public static String getUsername() {
 		return username;
 	}
 	public static void setUsername(String username) {
-		JSONFinderMain.username = username;
+		Main.username = username;
 	}
 	
 	public static String getPassword() {
 		return password;
 	}
 	public static void setPassword(String password) {
-		JSONFinderMain.password = password;
+		Main.password = password;
 	}
 	
+	public static File getFile() {
+		return file;
+	}
+	public static void setFile(File file) {
+		Main.file = file;
+	}
+	
+	public static FileWriter getFw() {
+		return fw;
+	}
+
+	public static void setFw(FileWriter fw) {
+		Main.fw = fw;
+	}
+
+	public static BufferedWriter getBw() {
+		return bw;
+	}
+
+	public static void setBw(BufferedWriter bw) {
+		Main.bw = bw;
+	}
+	
+	public static String getTimestampPattern() {
+		return TIMESTAMP_PATTERN;
+	}
+
+	public static String getSessionIdPattern() {
+		return SESSION_ID_PATTERN;
+	}
+
+	public static String getEventPattern() {
+		return EVENT_PATTERN;
+	}
+
 	public static int getJsonPropertyIndex() {
 		return jsonPropertyIndex;
 	}
 	public static void setJsonPropertyIndex(int jsonPropertyIndex) {
-		JSONFinderMain.jsonPropertyIndex = jsonPropertyIndex;
+		Main.jsonPropertyIndex = jsonPropertyIndex;
 	}
 	
 	public static String getNodejsString() {
 		return nodejsString;
 	}
 	public static void setNodejsString(String nodejsString) {
-		JSONFinderMain.nodejsString = nodejsString;
+		Main.nodejsString = nodejsString;
 	}
 	
 	public static String[] getNodejsEvents() {
 		return nodejsEvents;
 	}
 	public static void setNodejsEvents(String[] nodejsEvents) {
-		JSONFinderMain.nodejsEvents = nodejsEvents;
+		Main.nodejsEvents = nodejsEvents;
+	}
+	
+	public static List<WebElement> getDisclosureTriangles() {
+		return disclosureTriangles;
+	}
+
+	public static void setDisclosureTriangles(List<WebElement> disclosureTriangles) {
+		Main.disclosureTriangles = disclosureTriangles;
 	}
 	
 	public static String getCurrentTimestamp() {
 		return currentTimestamp;
 	}
 	public static void setCurrentTimestamp(String currentTimestamp) {
-		JSONFinderMain.currentTimestamp = currentTimestamp;
+		Main.currentTimestamp = currentTimestamp;
 	}
 	
 	public static String getCurrentEventType() {
 		return currentEventType;
 	}
 	public static void setCurrentEventType(String currentEventType) {
-		JSONFinderMain.currentEventType = currentEventType;
+		Main.currentEventType = currentEventType;
 	}
 
 	public static String getExtractedTimestamp() {
 		return extractedTimestamp;
 	}
 	public static void setExtractedTimestamp(String extractedTimestamp) {
-		JSONFinderMain.extractedTimestamp = extractedTimestamp;
+		Main.extractedTimestamp = extractedTimestamp;
 	}
 	
 	public static String getExtractedEventType() {
 		return extractedEventType;
 	}
 	public static void setExtractedEventType(String extractedEventType) {
-		JSONFinderMain.extractedEventType = extractedEventType;
+		Main.extractedEventType = extractedEventType;
 	}
 
 	public static String getCurrentSessionId() {
 		return currentSessionId;
 	}
 	public static void setCurrentSessionId(String currentSessionId) {
-		JSONFinderMain.currentSessionId = currentSessionId;
+		Main.currentSessionId = currentSessionId;
 	}
 	
 	public static String getJsonStringFromClipboard() {
 		return jsonStringFromClipboard;
 	}
 	public static void setJsonStringFromClipboard(String jsonStringFromClipboard) {
-		JSONFinderMain.jsonStringFromClipboard = jsonStringFromClipboard;
+		Main.jsonStringFromClipboard = jsonStringFromClipboard;
 	}
 	
 	@Override
@@ -244,14 +287,14 @@ public class JSONFinderMain extends Application {
 //			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("JSONFinderView.fxml"));
 			
 			// Create a FXML file loader object from the JSONFinderView.fxml file
-			FXMLLoader fxmlFileLoader = new FXMLLoader(JSONFinderMain.class.getResource("JSONFinderView.fxml"));
+			FXMLLoader fxmlFileLoader = new FXMLLoader(Main.class.getResource("JSONFinderView.fxml"));
 			
 			// Create the main GUI anchor pane and load the FXML objects onto it
 			AnchorPane anchorPane = fxmlFileLoader.load();
 
 			// Create an instance of the Controller from the FXML controller
 			JSONFinderController jsonFinderController = fxmlFileLoader.getController();
-			jsonFinderController.setMain(this);
+			jsonFinderController.setMain(this, driver, wait);
 			
 			// Create the main container for all contents in the Scene graph
 			Scene scene = new Scene(anchorPane,1300,750);
@@ -293,7 +336,7 @@ public class JSONFinderMain extends Application {
 	/**
 	 * This is the Constructor -  Creates an instance of the application
 	 */
-	public JSONFinderMain() {
+	public Main() {
 		
 		// INITIALISE VARIABLES
 		setUsername("");
