@@ -1,6 +1,5 @@
 package com.oztamautomation.jsonfinder;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,13 +17,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 
 public class JSONFinderController {
 	
@@ -34,14 +34,20 @@ public class JSONFinderController {
 	private WebDriverWait wait;
 	
 	// GUI ELEMENTS
+	/** The Close Menu Item */
+	@FXML
+	private MenuItem menuItemClose;
+	/** Input TextArea from the Node.js input */
 	@FXML 
 	private TextArea textArea;
+	/** Button Controls */
 	@FXML 
 	private Button buttonGetJSONLogs;
 	@FXML
 	private ToggleButton toggleBtnProduction;
 	@FXML
 	private ToggleButton toggletBtnStaging;
+	/** Provides the user the status of the application */
 	@FXML
 	private Label lblStatus;
 	
@@ -52,7 +58,8 @@ public class JSONFinderController {
 		System.setProperty("webdriver.gecko.driver", Main.getFirefoxDriverFile());
 	}
 	
-	/**Get the instance of the main class
+	/** This method gets the instance of the main class and WebDriver objects. It also copies
+	 *  the geckodriver.exe file to the desktop
 	 * 
 	 * @param jsonFinderMain The main class
 	 * @throws Exception 
@@ -69,6 +76,31 @@ public class JSONFinderController {
 		
 	}
 	
+	/**
+	 * This method handles closing of the application from the menu and close button
+	 * 
+	 * @param event	The File > Close event
+	 */
+	@FXML
+	public void exitApplication(ActionEvent event) {
+		
+		// Close the application
+		Platform.exit();
+		
+		//  Quit geckodriver.exe from running in Task Manager
+		driver.quit();
+	}
+	
+	
+	/**
+	 *  This method Handles the "Get JSON Logs" button click event. It gets the Node.js input 
+	 *  from the TextArea. Uses the Node.js timestamps and event types with Selenium
+	 *  WebDriver to extract the related JSON data, then exports the data to a text file on
+	 *  the desktop.
+	 * 
+	 * @param event
+	 * @throws InterruptedException
+	 */
 	@FXML
 	private void createJSONLog(ActionEvent event) throws InterruptedException {
 		
@@ -116,7 +148,7 @@ public class JSONFinderController {
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Last 12 hours")));
 		driver.findElement(By.linkText("Last 12 hours")).click();
 		
-		// Create the file and add the header text
+		// Create the "JSON Logs.txt" file and add the header text
 		createFileHeader(Main.getFile(), Main.getFw(), Main.getBw());
 		
 		
@@ -179,7 +211,7 @@ public class JSONFinderController {
 						
 						// The extracted timestamp and event type match the Node.js timestamp and event type
 						
-						// TROUBLESHOOTING CODE
+						// TESTING CODE:
 						System.out.println("Extracted Timestamp: " + Main.getExtractedTimestamp() + " AND Extracted Event Type: " + Main.getExtractedEventType());
 						System.out.println("The Extracted Timestamp MATCHES the currentTimestamp !!!!!!!!!!!!!!!");
 						
@@ -194,7 +226,7 @@ public class JSONFinderController {
 								+ "]/td/doc-viewer/div[@class='doc-viewer']/div[@class='doc-viewer-content']/render-directive/div[@id='json-ace']/div[@class='ace_scroller']/div[@class='ace_content']")));
 						
 						// Get the JSON text using the uniqueXpathNumber which is incremented by 2 as you move down each disclosure triangle
-						Main.setJsonStringFromClipboard(driver.findElement(By.xpath("/html/body[@id='kibana-body']/div[@class='content']/div[@class='app-wrapper']/div[@class='app-wrapper-panel']" 
+						Main.setExtractedJsonString(driver.findElement(By.xpath("/html/body[@id='kibana-body']/div[@class='content']/div[@class='app-wrapper']/div[@class='app-wrapper-panel']" 
 								+ "/div[@class='application tab-discover']/discover-app[@class='app-container']/div[@class='container-fluid']/div[@class='row'][2]/div[@class='discover-wrapper col-md-10']"
 								+ "/div[@class='discover-content']/div[@class='results']/div[@class='discover-table']/doc-table/div[@class='doc-table-container']/table[@class='kbn-table table']/tbody/tr[" 
 								+ (uniqueXpathNumber*2) 
@@ -202,7 +234,7 @@ public class JSONFinderController {
 						
 						
 						// Add the JSON text to the "JSON Logs.txt" tile
-						writeJSONDataToFile(Main.getJsonStringFromClipboard(), Main.getFile(), Main.getFw(), Main.getBw(), Main.getCurrentEventType());
+						writeJSONDataToFile(Main.getExtractedJsonString(), Main.getFile(), Main.getFw(), Main.getBw(), Main.getCurrentEventType());
 						
 						// We have a match. No need to iterate through the remaining disclosure triangles, exit the for loop
 						break;
@@ -362,8 +394,6 @@ public class JSONFinderController {
 			bw.write("ISSUES: \r\n\r\n\r\n");
 			bw.write("NODE.JS: \r\n");
 			
-
-			
 			for (String event : Main.getNodejsEvents()) {
 				bw.write(event + "\r\n");
 			}
@@ -381,10 +411,9 @@ public class JSONFinderController {
 		} finally {
 
 					try {
-
+						// Close the streams
 						if (bw != null)
 							bw.close();
-
 						if (fw != null)
 							fw.close();
 
@@ -404,10 +433,13 @@ public class JSONFinderController {
 	 * 							Returns an empty String (i.e. "") if nothing is found
 	 */
 	private static String extractMatchingString(String searchString, String regexPattern) {
+		
 		// Stores the matching String
 		String matchingString = "";
+		
 		// The pattern to match
 		Pattern pattern = Pattern.compile(regexPattern);		
+		
 		// Stores the matching regular expression
 		Matcher matcher;		
 		
@@ -454,7 +486,7 @@ public class JSONFinderController {
 			clickElement(driver, wait, By.className("kuiLocalSearchButton"));
 			
 			// Wait for all disclosure triangles to appear
-			Thread.sleep(2000);	
+			Thread.sleep(500);	
 			
 			// Get the number of disclosure triangles on the page
 			Main.setDisclosureTriangles(driver.findElements(By.xpath("//*/tr[@class='discover-table-row'][*]/td[1]/i[@class='fa discover-table-open-icon fa-caret-right']")));
@@ -549,7 +581,7 @@ public class JSONFinderController {
 		} finally {
 
 					try {
-
+						// Close the streams
 						if (bw != null)
 							bw.close();
 
@@ -564,7 +596,5 @@ public class JSONFinderController {
 		
 	} // END writeJSONDataToFile
 	
-	
-
 	
 } // END JSONFinderController

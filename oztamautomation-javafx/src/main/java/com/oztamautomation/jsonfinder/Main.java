@@ -1,40 +1,29 @@
+/**
+ * <h1>JSON Finder</h1>
+ * JSON Finder is a program that accepts a String of Node.js events, uses Selenium WebDriver to extract the related JSON data 
+ * from https://dashboard.oztam.com.au/ and then saves the JSON data to a text file on the desktop
+ * 
+ * @author Kevin Jang
+ * @version 2.0
+ * @since 2018-06-26
+ */
 package com.oztamautomation.jsonfinder;
 	
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+// IMPORTS
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextArea;
+
 
 
 public class Main extends Application {
@@ -51,7 +40,7 @@ public class Main extends Application {
 	private static final String EVENT_PATTERN = "LOAD|BEGIN|PROGRESS|AD_BEGIN|AD_COMPLETE|COMPLETE";	
 	
 	/** Max wait time (in seconds) for a page element to load */
-	private static final int WAIT_TIME = 120;
+	private static final int WAIT_TIME = 5;
 
 	/** The location and filename of the JSON Log text file to be created */
 	private static final String JSON_LOG_FILE_NAME = System.getProperty("user.home") + "\\Desktop\\JSON Logs.txt";
@@ -123,7 +112,7 @@ public class Main extends Application {
 	private static List<WebElement> disclosureTriangles;
 	
 	/** Stores the JSON String copied from the operating system Clipboard */
-	private static String jsonStringFromClipboard;
+	private static String extractedJsonString;
 	
 	
 	
@@ -274,19 +263,22 @@ public class Main extends Application {
 		return JSON_FINDER_FILE;
 	}
 	
-	public static String getJsonStringFromClipboard() {
-		return jsonStringFromClipboard;
+	public static String getExtractedJsonString() {
+		return extractedJsonString;
 	}
-	public static void setJsonStringFromClipboard(String jsonStringFromClipboard) {
-		Main.jsonStringFromClipboard = jsonStringFromClipboard;
+	public static void setExtractedJsonString(String extractedJsonString) {
+		Main.extractedJsonString = extractedJsonString;
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------------------------------------------/	
+	
+	/**
+	 * This method creates the Stage and initiates the JSONFinderController
+	 */
 	@Override
 	public void start(Stage primaryStage) {
-		try {
-//			// Create the main anchor pane from the FXML file
-//			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("JSONFinderView.fxml"));
-			
+		
+		try {			
 			// Create a FXML file loader object from the JSONFinderView.fxml file
 			FXMLLoader fxmlFileLoader = new FXMLLoader(Main.class.getResource("JSONFinderView.fxml"));
 			
@@ -303,12 +295,15 @@ public class Main extends Application {
 			// Apply the CSS
 			scene.getStylesheets().add(getClass().getResource("JSONFinder.css").toExternalForm());
 			
+			primaryStage.setTitle("JSON Finder" );
+			
 			// Specify the scene to be used on the Stage
 			primaryStage.setScene(scene);
 			
 			// Show the GUI
 			primaryStage.show();
 			
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -318,13 +313,15 @@ public class Main extends Application {
 	//--MAIN METHOD---------------------------------------------------------------------------------------------------------------------------------------------/	
 	
 	/**
-	 * This is the main method.
+	 * <h1>JSON Finder</h1>
+	 * JSON Finder is a program that accepts a String of Node.js events, extracts the related Node.js data 
+	 * from https://dashboard.oztam.com.au/ and then saves the JSON data to a text file.
 	 * 
-	 * @param args Unused
-	 * @return Nothing
-	 * @throws Exception 
-	 * @throws IOException When Selenium Webdriver cannot locate an element
-	 * @throws InterruptedException To handle potential Thread.sleep() exceptions
+	 * @author Kevin Jang
+	 * @version 1.0
+	 * @since 2018-04-30
+	 * 
+	 * @param args
 	 */
 	public static void main(String[] args) {
 		launch(args);
@@ -349,5 +346,15 @@ public class Main extends Application {
 		file = new File(JSON_LOG_FILE_NAME);
 		
 	} // END Constructor 
+	
+	
+	/**
+	 * This method is run when the JavaFX Stage is closed
+	 */
+	@Override 
+	public void stop() {
+		System.out.println("Stage is closing");
+	}
+	
 	
 } // END Class Main
