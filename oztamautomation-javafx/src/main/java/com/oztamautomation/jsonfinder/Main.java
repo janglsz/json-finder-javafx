@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,14 +21,12 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -37,7 +34,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
 import javafx.scene.control.TextArea;
 
 
@@ -62,7 +58,7 @@ public class Main extends Application {
 	
 	/** The JSON Finder file path - Note that the file extention has not been added to "JSON Finder" as the runnable jar will be converted to an exe file */
 	private static final String JSON_FINDER_FILE = System.getProperty("user.home") + "\\Desktop\\JSON Finder";
-	
+
 	/** The Firefox driver file path */
 	private static final String FIREFOX_DRIVER_FILE = System.getProperty("user.home") + "\\Desktop\\geckodriver.exe";
 	
@@ -77,9 +73,6 @@ public class Main extends Application {
 	
 	
 	//--OBJECT DECLARATION-------------------------------------------------------------------------------------------------------------------------------------/
-	
-	/** The application window */
-	private JFrame frmJsonFinder;
 	
 	/** The selenium webdriver base URL */
 	private static String baseURL;
@@ -273,6 +266,14 @@ public class Main extends Application {
 		Main.currentSessionId = currentSessionId;
 	}
 	
+	public static String getJsonLogFileName() {
+		return JSON_LOG_FILE_NAME;
+	}
+	
+	public static String getJsonFinderFile() {
+		return JSON_FINDER_FILE;
+	}
+	
 	public static String getJsonStringFromClipboard() {
 		return jsonStringFromClipboard;
 	}
@@ -328,8 +329,7 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 		
-		
-	}
+	} // END main
 	
 	//--CONSTRUCTOR-------------------------------------------------------------------------------------------------------------------------------------------/	
 	
@@ -347,165 +347,7 @@ public class Main extends Application {
 		bw = null;
 		fw = null;
 		file = new File(JSON_LOG_FILE_NAME);
-				
-//		// SET PROPERTIES		
-//		System.setProperty("webdriver.gecko.driver", FIREFOX_DRIVER_FILE);
 		
-	}
+	} // END Constructor 
 	
-
-	//--METHOD DECLARATION & DEFINITION------------------------------------------------------------------------------------------------------------------------/
-	
-	
-//	/**
-//	 * This method uses the Node.js input's timestamp and event type (e.g. LOAD, BEGIN, etc) to find the corresponding
-//	 * JSON log in dashboard.oztam.com.au
-//	 * 
-//	 * @param event					For handling the button click event
-//	 * @param textAreaNodejsInput	The TextArea when the Node.js data is entered
-//	 * @throws InterruptedException	Exception handling when a thread is interrupted
-//	 */
-//	private static void createJSONLog(ActionEvent event, JTextArea textAreaNodejsInput) throws InterruptedException {
-//						
-//				// Get the Node.js input from the console
-////				nodejsString = getNodejsInput();
-//				setNodejsString(textAreaNodejsInput.getText());
-//				
-//				// Separate the Node.js events into individual Strings			
-//				nodejsEvents = getNodejsString().split("\n");
-//				
-//				// Selenium WebDriver object for Firefox
-//				driver = new FirefoxDriver();
-//				
-//				// Create the object that controls the max wait time
-//				wait = new WebDriverWait(driver, WAIT_TIME);
-//				
-//				// Launch the web page
-//				driver.get(getBaseURL());
-//				
-//				// Enter the username and password
-//				clickAndFillInputField(driver, wait, By.id("username"), getUsername());
-//				clickAndFillInputField(driver, wait, By.id("password"), getPassword());
-//				
-//				// Find and click the Login in button
-//				driver.findElement(By.className("login")).click();
-//				
-//				// Wait for the time range button to appear and click it
-//				wait.until(ExpectedConditions.presenceOfElementLocated(By.className("fa-clock-o")));
-//				driver.findElement(By.className("fa-clock-o")).click();
-//				
-//				// Wait for the "Last 12 hours" option to appear, then click it
-//				wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Last 12 hours")));
-//				driver.findElement(By.linkText("Last 12 hours")).click();
-//				
-//				// Create the file and add the header text
-//				createFileHeader(file, fw, bw);
-//				
-//				// Iterate through each individual node.js event
-//				for (String singleNodejsEvent : nodejsEvents) {
-//					
-//					// If we have a new sessionId, perform another sessionId search for new JSON data
-//					hasSessionIdChanged(driver, wait, extractMatchingString(singleNodejsEvent, SESSION_ID_PATTERN));
-//					
-//					// Get the time stamp from the single Node.js event and save it
-//					setCurrentTimestamp(extractMatchingString(singleNodejsEvent, TIMESTAMP_PATTERN));
-//					
-//					// Get the event type from the single Node.js event and save it
-//					setCurrentEventType(extractMatchingString(singleNodejsEvent, EVENT_PATTERN));	
-//					
-//					// TROUBLESHOOTING CODE:
-//					System.out.println("Getting JSON Log for SessionId: " + getCurrentSessionId() + ", Timestamp: " + getCurrentTimestamp() + ", AND Event Type: " + getCurrentEventType());
-//					
-//					// On each Table tab, loop through each timestamp and event type
-//					for (int uniqueXpathNumber = 1; uniqueXpathNumber <= disclosureTriangles.size(); ++uniqueXpathNumber) {
-//						
-//							try {
-//
-//							// Index used to step through JSON property values, listed on the table tab. The timestamp index usually 
-//							// starts at [23] and increases (e.g. /tr[23]/td[3]/div[@class='doc-viewer-value']/span). Hence,
-//							// the assigned value below
-//							setJsonPropertyIndex(23);
-//							
-//							// For storing the clicked JSON property value on table tab
-//							String clickedText = "";
-//							
-//							// Starting at row [23], keep looking down the table for the timestamp text, until the timestamp is found
-//							do {
-//								
-//								// Get the 'timestamp' text starting at row [23]
-//								clickedText = driver.findElement(By.xpath("//*/tr[" 
-//										+ (uniqueXpathNumber*2) + "]/td/doc-viewer/div[@class='doc-viewer']"
-//										+ "/div[@class='doc-viewer-content']/render-directive/table[@class='table table-condensed']/tbody/tr[" 
-//										+ jsonPropertyIndex + "]/td[3]/div[@class='doc-viewer-value']/span")).getText();
-//								
-//								// Extract the clicked text and save it
-//								setExtractedTimestamp(extractMatchingString(clickedText, TIMESTAMP_PATTERN));
-//								
-//								// Increment the JSON property index for the next loop
-//								setJsonPropertyIndex(getJsonPropertyIndex() + 1);
-//								
-//							} while (!Pattern.matches(TIMESTAMP_PATTERN, getExtractedTimestamp()));
-//
-//							
-//							// Get the entire 'events' text from the JSON table and save it
-//							setExtractedEventType(driver.findElement(By.xpath("//*/tr[" 
-//									+ (uniqueXpathNumber*2) + "]/td/doc-viewer/div[@class='doc-viewer']/div[@class='doc-viewer-content']" 
-//									+ "/render-directive/table[@class='table table-condensed']/tbody/tr[8]/td[3]/div[@class='doc-viewer-value']/span")).getText());
-//							
-//							// Extract the event type from the entire 'event' text and save it
-//							setExtractedEventType(extractMatchingString(getExtractedEventType(), EVENT_PATTERN));
-//							
-//							// Check we have the right JSON data
-//							if (Objects.equals(getExtractedTimestamp(), getCurrentTimestamp()) && Objects.equals(getExtractedEventType(), getCurrentEventType())) {
-//								
-//								// The extracted timestamp and event type match the Node.js timestamp and event type
-//								
-//								// TROUBLESHOOTING CODE
-//								System.out.println("Extracted Timestamp: " + getExtractedTimestamp() + " AND Extracted Event Type: " + getExtractedEventType());
-//								System.out.println("The Extracted Timestamp MATCHES the currentTimestamp !!!!!!!!!!!!!!!");
-//								
-//								// Open the corresponding JSON tab
-//								clickElement(driver, wait, By.xpath("//*/tr[" + (uniqueXpathNumber*2) + "]/td/doc-viewer/div[@class='doc-viewer']/ul[@class='nav nav-tabs']/li[2]/a"));
-//								
-//								// Wait for the JSON text to appear
-//								wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body[@id='kibana-body']/div[@class='content']/div[@class='app-wrapper']/div[@class='app-wrapper-panel']" 
-//										+ "/div[@class='application tab-discover']/discover-app[@class='app-container']/div[@class='container-fluid']/div[@class='row'][2]/div[@class='discover-wrapper col-md-10']"
-//										+ "/div[@class='discover-content']/div[@class='results']/div[@class='discover-table']/doc-table/div[@class='doc-table-container']/table[@class='kbn-table table']/tbody/tr[" 
-//										+ (uniqueXpathNumber*2) 
-//										+ "]/td/doc-viewer/div[@class='doc-viewer']/div[@class='doc-viewer-content']/render-directive/div[@id='json-ace']/div[@class='ace_scroller']/div[@class='ace_content']")));
-//								
-//								// Get the JSON text using the uniqueXpathNumber which is incremented by 2 as you move down each disclosure triangle
-//								jsonStringFromClipboard = driver.findElement(By.xpath("/html/body[@id='kibana-body']/div[@class='content']/div[@class='app-wrapper']/div[@class='app-wrapper-panel']" 
-//										+ "/div[@class='application tab-discover']/discover-app[@class='app-container']/div[@class='container-fluid']/div[@class='row'][2]/div[@class='discover-wrapper col-md-10']"
-//										+ "/div[@class='discover-content']/div[@class='results']/div[@class='discover-table']/doc-table/div[@class='doc-table-container']/table[@class='kbn-table table']/tbody/tr[" 
-//										+ (uniqueXpathNumber*2) 
-//										+ "]/td/doc-viewer/div[@class='doc-viewer']/div[@class='doc-viewer-content']/render-directive/div[@id='json-ace']/div[@class='ace_scroller']/div[@class='ace_content']")).getText();
-//								
-//								
-//								// Add the JSON text to the "JSON Logs.txt" tile
-//								writeJSONDataToFile(jsonStringFromClipboard, file, fw, bw, getCurrentEventType());
-//								
-//								// We have a match. No need to iterate through the remaining disclosure triangles, exit the for loop
-//								break;
-//								
-//							} // END if
-//							
-//						} catch (Exception e) {
-//							// Catches exceptions caused if a disclosure triangle cannot be found
-//							
-//							System.out.println("Exception caught....\r\n" + e.toString());
-//							
-//						} // END catch
-//						
-//					} // END for
-//					
-//				} // END for
-//				
-//				// Kill the geckodriver.exe and quite Firefox
-//				driver.quit();
-//					
-//	} // END createJSONLog
-
-	
-	
-} // END CLASS
+} // END Class Main

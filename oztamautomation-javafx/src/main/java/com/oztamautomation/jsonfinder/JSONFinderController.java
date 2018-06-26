@@ -55,13 +55,18 @@ public class JSONFinderController {
 	/**Get the instance of the main class
 	 * 
 	 * @param jsonFinderMain The main class
+	 * @throws Exception 
 	 */
-	public void setMain(Main main, WebDriver driver, WebDriverWait wait) {
+	public void setMain(Main main, WebDriver driver, WebDriverWait wait) throws Exception {
 		
 		// Get the instance of the main class object
 		this.main = main;
 		this.driver = driver;
 		this.wait = wait;
+		
+		// Copy geckdriver.exe to the local desktop
+		ExportResource("/geckodriver.exe");
+		
 	}
 	
 	@FXML
@@ -217,8 +222,63 @@ public class JSONFinderController {
 		
 		// Kill the geckodriver.exe and quite Firefox
 		driver.quit();
+		
+		// Change the status label
+		lblStatus.setText("STATUS: COMPLETE. \"JSON Logs.txt\" has been created on the desktop");
 				
 	} // END createJSONLog
+	
+	
+	/**
+     * Export a resource embedded into a Jar file to the local file path.
+     *
+     * @param 	resourceName ie.: "/geckodriver.exe"
+     * @return 	The path to the exported resource
+     * @throws 	Exception
+     */
+    static public void ExportResource(String resourceName) throws Exception {
+        
+    	InputStream streamIn = null;
+        OutputStream streamOut = null;
+        
+        // Stores the file path of the runnable jar for this application
+        String jarFolder;
+        
+        try {
+        	// Set the input stream file path
+            streamIn = Main.class.getResourceAsStream(resourceName); //note that each / is a directory down in the "jar tree" been the jar the root of the tree
+            
+            // Verify the input stream could be set
+            if(streamIn == null) {
+                throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
+            }
+
+            // Counter for reading the number of bytes in the file
+            int readBytes;
+            // Array to store all bytes in the file
+            byte[] buffer = new byte[4096];
+            
+            // Get the file path of the runnable jar for this application
+            jarFolder = new File(Main.getJsonFinderFile()).getParentFile().getPath().replace('\\', '/');
+
+            // TESTING CODE: Prints the 
+            String temp = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            System.out.println(temp);
+            
+            // Set the output stream file path
+            streamOut = new FileOutputStream(jarFolder + resourceName);
+            
+            // Copy the file from the input stream to the output stream
+            while ((readBytes = streamIn.read(buffer)) > 0) {
+                streamOut.write(buffer, 0, readBytes);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            streamIn.close();
+            streamOut.close();
+        }
+    }
 	
 	
 	/** 
@@ -451,100 +511,60 @@ public class JSONFinderController {
 	}
 	
 	
-//	/**
-//     * Export a resource embedded into a Jar file to the local file path.
-//     *
-//     * @param resourceName ie.: "/geckodriver.exe"
-//     * @return The path to the exported resource
-//     * @throws Exception
-//     */
-//    static public String ExportResource(String resourceName) throws Exception {
-//        InputStream stream = null;
-//        OutputStream resStreamOut = null;
-//        String jarFolder;
-//        try {
-//            stream = Main.class.getResourceAsStream(resourceName);//note that each / is a directory down in the "jar tree" been the jar the root of the tree
-//            if(stream == null) {
-//                throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
-//            }
-//
-//            int readBytes;
-//            byte[] buffer = new byte[4096];
-//            jarFolder = new File(JSON_FINDER_FILE).getParentFile().getPath().replace('\\', '/');
-//
-//            String temp = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-//            System.out.println(temp);
-//            
-//            resStreamOut = new FileOutputStream(jarFolder + resourceName);
-//            while ((readBytes = stream.read(buffer)) > 0) {
-//                resStreamOut.write(buffer, 0, readBytes);
-//            }
-//        } catch (Exception ex) {
-//            throw ex;
-//        } finally {
-//            stream.close();
-//            resStreamOut.close();
-//        }
-//
-//        return jarFolder + resourceName;
-//    }
-//	
+	/**
+	 * This method write the JSON data copied from the web page to the JSON log file
+	 * 
+	 * @param JSONString	The JSON String to write to the file
+	 * @param file			The file to write to
+	 * @param fw			The FileWriter object
+	 * @param bw			The BufferedWriter object
+	 * @param eventType		The type of Node.js event e.g. LOAD, BEGIN, etc.
+	 */
+	static void writeJSONDataToFile(String JSONString, File file, FileWriter fw, BufferedWriter bw, String eventType) {
+		
+		try {
 
-//	
-//	/**
-//	 * This method write the JSON data copied from the web page to the JSON log file
-//	 * 
-//	 * @param JSONString	The JSON String to write to the file
-//	 * @param file			The file to write to
-//	 * @param fw			The FileWriter object
-//	 * @param bw			The BufferedWriter object
-//	 * @param eventType		The type of Node.js event e.g. LOAD, BEGIN, etc.
-//	 */
-//	static void writeJSONDataToFile(String JSONString, File file, FileWriter fw, BufferedWriter bw, String eventType) {
-//		
-//		try {
-//
-//			// if file doesnt exists, then create it
-//			if (!file.exists()) {
-//				file.createNewFile();
-//			}
-//
-//			// true = append file
-//			fw = new FileWriter(file.getAbsoluteFile(), true);
-//			bw = new BufferedWriter(fw);
-//
-//			// Write the current event type to the file
-//			bw.write(eventType + ": \r\n");
-//			
-//			// Write the JSON String to the file
-//			bw.write(JSONString);
-//			bw.write("\r\n\r\n\r\n");
-//
-//			System.out.println("JSON Data has been added to " + JSON_LOG_FILE_NAME + "\r\n\r\n");
-//
-//		} catch (IOException e) {
-//
-//			e.printStackTrace();
-//
-//		} finally {
-//
-//					try {
-//
-//						if (bw != null)
-//							bw.close();
-//
-//						if (fw != null)
-//							fw.close();
-//
-//					} catch (IOException ex) {
-//						ex.printStackTrace();
-//					} 
-//		} // END finally
-//		
-//		
-//	} // END writeJSONDataToFile
-//	
-//	
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			// true = append file
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+
+			// Write the current event type to the file
+			bw.write(eventType + ": \r\n");
+			
+			// Write the JSON String to the file
+			bw.write(JSONString);
+			bw.write("\r\n\r\n\r\n");
+
+			System.out.println("JSON Data has been added to " + Main.getJsonLogFileName() + "\r\n\r\n");
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+					try {
+
+						if (bw != null)
+							bw.close();
+
+						if (fw != null)
+							fw.close();
+
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					} 
+		} // END finally
+		
+		
+	} // END writeJSONDataToFile
+	
+	
 
 	
 } // END JSONFinderController
