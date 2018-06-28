@@ -20,6 +20,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -89,6 +91,54 @@ public class JSONFinderController {
 		
 		//  Quit geckodriver.exe from running in Task Manager
 		driver.quit();
+	}
+	
+	
+	/**
+	 * This method shows a dialog containing Help Information
+	 * 
+	 * @param event	Click event for Help > About
+	 */
+	@FXML
+	public void showAboutDialog(ActionEvent event) {
+		
+		// Set the type of alert
+		Alert alert = new Alert(AlertType.INFORMATION);
+		
+		// Set the dialog width
+		alert.getDialogPane().setMinWidth(425);
+		
+		// Set the dialog title
+		alert.setTitle("About JSON Finder");
+		
+		// Set the dialog heading
+		alert.setHeaderText("HELP INFORMATION");
+		
+		// Set the dialog content text
+		alert.setContentText("SYSTEM REQUIREMENTS:\r\n" + 
+				"1. Java (version 1.8) must be installed\r\n" + 
+				"2. Firefox must be installed\r\n" + 
+				"\r\n" + 
+				"DESCRIPTION:\r\n" + 
+				"JSON Finder will read each line of Node.js input and find the corresponding \r\n" + 
+				"JSON data using the Node.js timestamp and event type (LOAD, BEGIN, etc.) \r\n" + 
+				"\r\n" + 
+				"Using Selenium WebDriver, the JSON data is extracted from either: \r\n" + 
+				"1. Production: https://dashboard.oztam.com.au\r\n" + 
+				"2. Staging: https://sdashboard.oztam.com.au \r\n" + 
+				"\r\n" + 
+				"The application copies the Firefox driver (geckodriver.exe) onto the desktop." + 
+				"The JSON data is then written to a \"JSON Log File.txt\", on the users " + 
+				"desktop. \r\n" + 
+				"\r\n" + 
+				"TROUBLESHOOTING:\r\n" + 
+				"If the application is prematurely quit, geckdriver.exe may need to be manually " + 
+				"quit from Windows Task Manager to successfully run the appliation again." + 
+				"\r\n\r\n" + 
+				"Created by Kevin Jang.");
+		
+		// Show the About Dialog
+		alert.show();
 	}
 	
 	

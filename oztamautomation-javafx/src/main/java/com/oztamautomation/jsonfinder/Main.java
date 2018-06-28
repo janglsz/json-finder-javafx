@@ -52,9 +52,6 @@ public class Main extends Application {
 	private static final String FIREFOX_DRIVER_FILE = System.getProperty("user.home") + "\\Desktop\\geckodriver.exe";
 	
 	
-	// System.getProperty("user.home") + "\\Desktop\\JSON Finder.jar"
-	
-	
 	//--VARIABLE DECLARATION------------------------------------------------------------------------------------------------------------------------------------/	
 
 	/** Index for stepping down the JSON table */
@@ -290,11 +287,12 @@ public class Main extends Application {
 			jsonFinderController.setMain(this, driver, wait);
 			
 			// Create the main container for all contents in the Scene graph
-			Scene scene = new Scene(anchorPane,1300,750);
+			Scene scene = new Scene(anchorPane, 1300, 750);
 			
 			// Apply the CSS
 			scene.getStylesheets().add(getClass().getResource("JSONFinder.css").toExternalForm());
 			
+			// Set the Title
 			primaryStage.setTitle("JSON Finder" );
 			
 			// Specify the scene to be used on the Stage
