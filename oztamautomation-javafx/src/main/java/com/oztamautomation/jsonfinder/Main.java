@@ -13,7 +13,6 @@ package com.oztamautomation.jsonfinder;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -42,14 +41,23 @@ public class Main extends Application {
 	/** Max wait time (in seconds) for a page element to load */
 	private static final int WAIT_TIME = 5;
 
-	/** The location and filename of the JSON Log text file to be created */
-	private static final String JSON_LOG_FILE_NAME = System.getProperty("user.home") + "\\Desktop\\JSON Logs.txt";
+//	/** The location and filename of the JSON Log text file to be created (on Windows) */
+//	private static final String JSON_LOG_FILE_NAME = System.getProperty("user.home") + "\\Desktop\\JSON Logs.txt";
 	
-	/** The JSON Finder file path - Note that the file extention has not been added to "JSON Finder" as the runnable jar will be converted to an exe file */
-	private static final String JSON_FINDER_FILE = System.getProperty("user.home") + "\\Desktop\\JSON Finder";
+//	/** The JSON Finder file path (for Windows) - Note that the file extention has not been added to "JSON Finder" as the runnable jar will be converted to an exe file */
+//	private static final String JSON_FINDER_FILE = System.getProperty("user.home") + "\\Desktop\\JSON Finder";
 
-	/** The Firefox driver file path */
-	private static final String FIREFOX_DRIVER_FILE = System.getProperty("user.home") + "\\Desktop\\geckodriver.exe";
+//	/** The Firefox driver file path (for Windows) */
+//	private static final String FIREFOX_DRIVER_FILE = System.getProperty("user.home") + "\\Desktop\\geckodriver.exe";
+	
+	/** The location and filename of the JSON Log text file to be created (on Mac) */
+	private static final String JSON_LOG_FILE_NAME = System.getProperty("user.home") + "/Desktop/JSON Logs.txt";
+	
+	/** The JSON Finder file path (for Mac) - Note that the file extension has not been added to "JSON Finder" as the runnable jar will be converted to an exe file */
+	private static final String JSON_FINDER_FILE = System.getProperty("user.home") + "/Desktop/JSON Finder";
+
+	/** The Firefox driver file path (for Mac) */
+	private static final String FIREFOX_DRIVER_FILE = System.getProperty("user.home") + "/Desktop/geckodriver";
 	
 	
 	//--VARIABLE DECLARATION------------------------------------------------------------------------------------------------------------------------------------/	
@@ -334,8 +342,8 @@ public class Main extends Application {
 	public Main() {
 		
 		// INITIALISE VARIABLES
-		setUsername("");
-		setPassword("");
+		setUsername("oztam");
+		setPassword("IFY27aLfU6Rhkoo");
 		setCurrentSessionId("");
 		
 		// INITIALISE OBJECTS
