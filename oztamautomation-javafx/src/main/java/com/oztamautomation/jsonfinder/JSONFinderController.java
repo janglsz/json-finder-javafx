@@ -10,16 +10,12 @@ import java.io.OutputStream;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,9 +72,6 @@ public class JSONFinderController {
 		
 		// Copy geckodriver.exe to the local desktop for Windows
 		exportGeckoDriver("/geckodriver.exe");
-		
-		// Export geckodriver to the local desktop for Mac
-		exportGeckoDriver("/geckodriver");
 	}
 	
 	/**
@@ -179,6 +172,9 @@ public class JSONFinderController {
 		
 		// Launch Firefox
 		driver = new FirefoxDriver();
+		
+		// Maximise the Window
+		driver.manage().window().maximize();
 		
 		// Create the object that controls the max wait time
 		wait = new WebDriverWait(driver, Main.getWaitTime());

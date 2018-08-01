@@ -346,8 +346,8 @@ public class Main extends Application {
 	public Main() {
 		
 		// INITIALISE VARIABLES
-		setUsername("");
-		setPassword("");
+		setUsername("oztam");
+		setPassword("IFY27aLfU6Rhkoo");
 		setCurrentSessionId("");
 		
 		// INITIALISE OBJECTS
