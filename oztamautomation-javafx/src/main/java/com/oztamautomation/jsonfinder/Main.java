@@ -1,11 +1,14 @@
 /**
  * <h1>JSON Finder</h1>
- * JSON Finder is a program that accepts a String of Node.js events, uses Selenium WebDriver to extract the related JSON data 
- * from https://dashboard.oztam.com.au/ and then saves the JSON data to a text file on the desktop
+ * JSON Finder is a program that does the following:
+ * 1. Accepts a String of OzTAM Node.js events
+ * 2. Uses Selenium WebDriver to extract the related JSON data from https://dashboard.oztam.com.au/ or https://dashboard.oztam.com.au/
+ * 3. Saves the JSON data to a text file on the desktop
  * 
  * @author Kevin Jang
- * @version 2.0
- * @since 2018-06-26
+ * @version 3.0
+ * @since 2018-08-01
+ * 
  */
 package com.oztamautomation.jsonfinder;
 	
@@ -39,7 +42,7 @@ public class Main extends Application {
 	private static final String EVENT_PATTERN = "LOAD|BEGIN|PROGRESS|AD_BEGIN|AD_COMPLETE|COMPLETE";	
 	
 	/** Max wait time (in seconds) for a page element to load */
-	private static final int WAIT_TIME = 5;
+	private static final int WAIT_TIME = 30;
 
 //	/** The location and filename of the JSON Log text file to be created (on Windows) */
 //	private static final String JSON_LOG_FILE_NAME = System.getProperty("user.home") + "\\Desktop\\JSON Logs.txt";
@@ -320,14 +323,15 @@ public class Main extends Application {
 	
 	/**
 	 * <h1>JSON Finder</h1>
-	 * JSON Finder is a program that accepts a String of Node.js events, extracts the related Node.js data 
-	 * from https://dashboard.oztam.com.au/ and then saves the JSON data to a text file.
+	 * JSON Finder is a program that does the following:
+	 * 1. Accepts a String of OzTAM Node.js events
+	 * 2. Uses Selenium WebDriver to extract the related JSON data from https://dashboard.oztam.com.au/ or https://dashboard.oztam.com.au/
+	 * 3. Saves the JSON data to a text file on the desktop
 	 * 
 	 * @author Kevin Jang
-	 * @version 1.0
-	 * @since 2018-04-30
+	 * @version 3.0
+	 * @since 2018-08-01
 	 * 
-	 * @param args
 	 */
 	public static void main(String[] args) {
 		launch(args);
